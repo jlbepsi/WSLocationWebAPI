@@ -14,28 +14,21 @@ namespace LocationTests
             return new Location()
             {
                 Id = 1,
-                IdUtilisateur = 1,
-                IdHabitation = 3,
+                Idutilisateur = 1,
+                Idhabitation = 3,
                 Datedebut = new DateTime(2022, 7, 5),
                 Datefin = new DateTime(2022, 7, 6),
-                Montant = 100,
+                Montanttotal = 100,
+                Montantverse = 100
             };
         }
 
-        private void LocationDateConstraintException()
-        {
-            // Arrange
-            Location location = getDummyLocation();
-            location.Datedebut = location.Datefin.AddDays(1);
-
-            // Act
-            location.CheckDate();
-        }
-
+        /*
         [SetUp]
         public void Setup()
         {
         }
+        */
 
         [Test]
         public void ConstraintOk_ShouldSuccess()
@@ -88,6 +81,28 @@ namespace LocationTests
 
             // Assert
             Assert.That(exception.Message, Is.EqualTo("La date de fin doit être après la date de début"));
+        }
+
+        [Test]
+        public void ConstraintMontants_ShouldFail()
+        {
+            LocationException exception = Assert.Throws<LocationException>(
+                delegate
+                {
+                    // Arrange
+                    Location location = getDummyLocation();
+                    location.Montanttotal = 100;
+                    location.Montantverse = location.Montanttotal + 1;
+
+                    // Act
+                    location.CheckMontant();
+
+                    // Assert : LocationException should be raised
+
+                });
+
+            // Assert
+            Assert.That(exception.Message, Is.EqualTo("Le montant versé ne peut pas être supérieur au montant total"));
         }
     }
 }

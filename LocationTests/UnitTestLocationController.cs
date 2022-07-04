@@ -16,20 +16,22 @@ namespace LocationTests
                 new Location()
                 {
                     Id = 1,
-                    IdUtilisateur = 1,
-                    IdHabitation = 3,
+                    Idutilisateur = 1,
+                    Idhabitation = 3,
                     Datedebut = new DateTime(2022, 7, 5),
                     Datefin = new DateTime(2022, 7, 6),
-                    Montant = 100,
+                    Montanttotal = 100,
+                    Montantverse = 100,
                 },
                 new Location()
                 {
                     Id = 2,
-                    IdUtilisateur = 2,
-                    IdHabitation = 4,
+                    Idutilisateur = 2,
+                    Idhabitation = 4,
                     Datedebut = new DateTime(2022, 7, 12),
                     Datefin = new DateTime(2022, 7, 17),
-                    Montant = 420,
+                    Montanttotal = 420,
+                    Montantverse = 100,
                 }
             };
         }
@@ -38,19 +40,22 @@ namespace LocationTests
             return new Location()
             {
                 Id = 1,
-                IdUtilisateur = 1,
-                IdHabitation = 3,
+                Idutilisateur = 1,
+                Idhabitation = 3,
                 Datedebut = new DateTime(2022, 7, 5),
                 Datefin = new DateTime(2022, 7, 6),
-                Montant = 100,
+                Montanttotal = 100,
+                Montantverse = 100,
             };
         }
 
 
+        /*
         [SetUp]
         public void Setup()
         {
         }
+        */
 
         [Test]
         public void GetAll_ReturnsOK()
@@ -58,8 +63,8 @@ namespace LocationTests
             // Arrange
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.GetLocations()).Returns(getDummyLocations());
-            var mockLogger = new Mock<ILogger<LocationController>> ();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>> ();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var result = controller.GetLocations();
@@ -78,8 +83,8 @@ namespace LocationTests
             // Arrange
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.GetLocation(1)).Returns(getDummyLocation());
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var result = controller.GetLocation(1);
@@ -98,8 +103,8 @@ namespace LocationTests
             Location location = getDummyLocation();
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Returns(location);
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var actionResult = controller.AddLocation(location);
@@ -125,8 +130,8 @@ namespace LocationTests
 
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Throws(new LocationException("La date de fin doit être après la date de début"));
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var actionResult = controller.AddLocation(location);
@@ -147,8 +152,8 @@ namespace LocationTests
             // Arrange
             Location location = getDummyLocation();
             var mockService = new Mock<ILocationService>();
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var actionResult = controller.UpdateLocation(1, location);
@@ -167,8 +172,8 @@ namespace LocationTests
             // Arrange
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.DeleteLocation(It.IsAny<int>())).Returns(getDummyLocation());
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var actionResult = controller.DeleteLocation(1);
@@ -186,8 +191,8 @@ namespace LocationTests
             // Arrange
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.DeleteLocation(It.IsAny<int>())).Returns(value: null);
-            var mockLogger = new Mock<ILogger<LocationController>>();
-            var controller = new LocationController(mockService.Object, mockLogger.Object);
+            var mockLogger = new Mock<ILogger<LocationsController>>();
+            var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
             // Act
             var actionResult = controller.DeleteLocation(1);

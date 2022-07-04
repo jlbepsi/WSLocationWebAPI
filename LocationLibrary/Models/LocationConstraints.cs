@@ -19,5 +19,17 @@ namespace LocationLibrary.Models
                 throw new LocationException("La date de fin doit être après la date de début");
             }
         }
+        public static void CheckMontant(this Location location)
+        {
+            if (location.Montantverse > location.Montanttotal)
+            {
+                throw new LocationException("Le montant versé ne peut pas être supérieur au montant total");
+            }
+        }
+        public static void CheckAll(this Location location)
+        {
+            location.CheckDate();
+            location.CheckMontant();
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace LocationLibrary.BusinessLogic
 {
     public class LocationService : ILocationService
     {
-        private rhlocationContext contexte;
+        private readonly rhlocationContext contexte;
 
         public LocationService()
         {
@@ -23,27 +23,36 @@ namespace LocationLibrary.BusinessLogic
 
         public List<Location> GetLocations()
         {
-            return contexte.Locations.Include(r => r.Reglements).ToList();
+            return contexte.Locations
+                .Include(f => f.Facture)
+                .Include(r => r.Reglements)
+                .Include(r => r.Relances)
+                .ToList();
         }
 
 
         public Location GetLocation(int id)
         {
-            return contexte.Locations.FirstOrDefault(l => l.Id == id);
+            return contexte.Locations
+                .Include(f => f.Facture)
+                .Include(r => r.Reglements)
+                .Include(r => r.Relances)
+                .FirstOrDefault(l => l.Id == id);
         }
 
         public Location AddLocation(Location location)
         {
-            // Vérification des dates
-            location.CheckDate();
+            // Vérification des contraintes
+            location.CheckAll();
 
             Location locationDB = new Location()
             {
-                IdUtilisateur = location.IdUtilisateur,
-                IdHabitation = location.IdHabitation,
+                Idutilisateur = location.Idutilisateur,
+                Idhabitation = location.Idhabitation,
                 Datedebut = location.Datedebut,
                 Datefin = location.Datefin,
-                Montant = location.Montant,
+                Montanttotal = location.Montanttotal,
+                Montantverse = location.Montantverse
             };
 
             // Ajout de la location
@@ -55,17 +64,24 @@ namespace LocationLibrary.BusinessLogic
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                throw new LocationException(string.Format("Erreur dans l'ajout de la location dans le référentiel", location.ToString()), ex);
+                throw new LocationException($"Erreur dans l'ajout de la location dans le référentiel : {location.ToString()}", ex);
             }
             return locationDB;
         }
 
         public Location DeleteLocation(int id)
         {
-            // Ajout de la location
+            // Suppression de la location
             Location location = contexte.Locations.FirstOrDefault(l => l.Id == id);
             if (location == null)
                 return null;
+
+            // SI la date de début de location est avant la date du jour, la supression est possible
+            // SINON on lance une exception
+            if (location.Datedebut.CompareTo(DateTime.Now) >= 0)
+            {
+                throw new LocationException($"Suppression de la location impossible car la location a déjà commencé: {location.ToString()}");
+            }
 
             contexte.Locations.Remove(location);
             try
@@ -74,8 +90,7 @@ namespace LocationLibrary.BusinessLogic
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                // LogManager.GetLogger().Error(ex);
-                throw new LocationException(string.Format("Erreur dans la suppression de la location dans le référentiel", location.ToString()), ex);
+                throw new LocationException($"Erreur dans la suppression de la location dans le référentiel : {location.ToString()}", ex);
             }
             return location;
         }

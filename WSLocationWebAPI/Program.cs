@@ -9,25 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // NLog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
-builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Logging.SetMinimumLevel(LogLevel.Trace);
 builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
 
-// https://www.geekinsta.com/mysql-with-net-core-and-entity-framework/
-// https://arjavdave.com/2022/04/17/code-first-entity-framework-core-mysql/
-
 // Dependency Injection
-/*builder.Services.AddDbContext<rhlocationContext>(x => 
-    {
-        var connectionString = builder.Configuration.GetConnectionString("RHLocationDatabase");
-        x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-    });*/
-
 builder.Services.AddScoped<ILocationService, LocationService>();
-
+builder.Services.AddScoped<IRelanceService, RelanceService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // Voir https://docs.microsoft.com/fr-fr/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio

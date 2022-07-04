@@ -8,6 +8,7 @@
     <!-- Ajout des commentaires pour Swagger -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>
+    <CodeAnalysisRuleSet>..\.sonarlint\jlbepsi_wslocationwebapicsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

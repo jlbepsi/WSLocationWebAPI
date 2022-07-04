@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WSLocationWebAPI", "WSLocat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationLibrary", "LocationLibrary\LocationLibrary.csproj", "{DF320684-C0F1-48D8-999E-3F2A41A3170D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationTests", "LocationTests\LocationTests.csproj", "{9B57DD69-D397-4684-A2CE-A62B52C71196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocationTests", "LocationTests\LocationTests.csproj", "{9B57DD69-D397-4684-A2CE-A62B52C71196}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{6689B0EC-05D4-4283-A434-B57A7F5DB33A}"
+	ProjectSection(SolutionItems) = preProject
+		Database\rhlocation.sql = Database\rhlocation.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

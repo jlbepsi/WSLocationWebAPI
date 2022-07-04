@@ -7,16 +7,16 @@ using LocationLibrary.Models;
 
 namespace WSLocationWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class LocationController : ControllerBase
+    public class LocationsController : ControllerBase
     {
         private static ObjectResult ServerError503 = new ObjectResult("Erreur générale") { StatusCode = StatusCodes.Status503ServiceUnavailable };
 
         private readonly ILocationService _locationService;
-        private readonly ILogger<LocationController> _logger;
+        private readonly ILogger<LocationsController> _logger;
 
-        public LocationController(ILocationService locationService, ILogger<LocationController> logger)
+        public LocationsController(ILocationService locationService, ILogger<LocationsController> logger)
         {
             // Mise en oeuvre de l'Injection de Dépendance (voir Program.cs)
             _locationService = locationService;
@@ -24,14 +24,14 @@ namespace WSLocationWebAPI.Controllers
             _logger = logger;
         }
 
-        // GET: api/<LocationController>
+        // GET: api/v1/location
         /// <summary>
         /// Retourne la liste des locations <code>Location</code>
         /// </summary>
         /// <returns>Une liste d'objet Location</returns>
         /// <see cref="Location"/>
         /// <example>
-        /// http://serveur/api/locations
+        /// http://serveur/api/v1/locations
         /// </example>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,7 +64,7 @@ namespace WSLocationWebAPI.Controllers
         /// <see cref="Location"/>
         /// <response code="404">La location d'id id n'existe pas</response>     
         /// <example>
-        /// http://serveur/api/locations/3
+        /// http://serveur/api/v1/locations/3
         /// </example>
         [HttpGet("{id}")]
         [Produces("application/json")]
@@ -95,7 +95,7 @@ namespace WSLocationWebAPI.Controllers
             }
         }
 
-        // POST api/<LocationController>
+        // POST api/v1/locations
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -120,7 +120,7 @@ namespace WSLocationWebAPI.Controllers
             return CreatedAtAction(nameof(GetLocation), new { id = locationCreated.Id }, locationCreated);
         }
 
-        // PUT api/<LocationController>/5
+        // PUT api/v1/locations/5
         /// <summary>
         /// Cette méthode n'est pas implémentée
         /// </summary>
@@ -145,7 +145,7 @@ namespace WSLocationWebAPI.Controllers
         /// <see cref="Location"/>
         /// <response code="404">La location d'id n'existe pas</response>     
         /// <example>
-        /// http://serveur/api/locations/3
+        /// http://serveur/api/v1/locations/3
         /// </example>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

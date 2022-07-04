@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace LocationLibrary.Models
 {
@@ -9,16 +8,20 @@ namespace LocationLibrary.Models
         public Location()
         {
             Reglements = new HashSet<Reglement>();
+            Relances = new HashSet<Relance>();
         }
 
         public int Id { get; set; }
-        public int IdUtilisateur { get; set; }
-        public int IdHabitation { get; set; }
+        public int Idutilisateur { get; set; }
+        public int Idhabitation { get; set; }
+        public int? FactureId { get; set; }
         public DateTime Datedebut { get; set; }
         public DateTime Datefin { get; set; }
-        [Range(10, double.MaxValue, ErrorMessage = "Le prix doit être supérieur ou égal à 10")]
-        public decimal? Montant { get; set; }
+        public double Montanttotal { get; set; }
+        public double Montantverse { get; set; }
 
+        public virtual Facture? Facture { get; set; }
         public virtual ICollection<Reglement> Reglements { get; set; }
+        public virtual ICollection<Relance> Relances { get; set; }
     }
 }
