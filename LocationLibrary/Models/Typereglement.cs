@@ -11,7 +11,7 @@ namespace LocationLibrary.Models
         }
 
         public int Id { get; set; }
-        public string Libelle { get; set; } = null!;
+        public string Libelle { get; set; }
 
         public virtual ICollection<Reglement> Reglements { get; set; }
     }

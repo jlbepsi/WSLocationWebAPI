@@ -1,22 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LocationLibrary.Models
 {
     public partial class Facture
     {
-        public Facture()
-        {
-            Locations = new HashSet<Location>();
-        }
-
         /// <summary>
         /// Doit être identique à location_id
         /// </summary>
         public int Id { get; set; }
         public DateTime Date { get; set; }
-        public string Adresse { get; set; } = null!;
+        
+        [MinLength(5)]
+        public string Adresse { get; set; }
 
-        public virtual ICollection<Location> Locations { get; set; }
+        public virtual Location IdLocation { get; set; }
     }
 }

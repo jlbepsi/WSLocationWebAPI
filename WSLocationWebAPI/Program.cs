@@ -1,8 +1,13 @@
+using System;
+using System.IO;
 using LocationLibrary.BusinessLogic;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
-
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -76,7 +81,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c =>
     {
         // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-        // specifying the Swagger JSON endpoint : v1 est le nom défini avec SwaggerDoc (voir ConfigureServices)
+        // specifying the Swagger JSON endpoint : v1 est le nom dï¿½fini avec SwaggerDoc (voir ConfigureServices)
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Gestions des locations V1");
     });
 }

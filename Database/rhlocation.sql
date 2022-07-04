@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : lun. 04 juil. 2022 à 10:16
--- Version du serveur :  8.0.29-0ubuntu0.20.04.3
+-- Généré le : lun. 04 juil. 2022 à 15:43
+-- Version du serveur :  8.0.27
 -- Version de PHP : 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -34,13 +34,6 @@ CREATE TABLE `facture` (
   `adresse` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
---
--- Déchargement des données de la table `facture`
---
-
-INSERT INTO `facture` (`id`, `date`, `adresse`) VALUES
-(1, '2022-06-24 16:03:34', 'dsgf');
-
 -- --------------------------------------------------------
 
 --
@@ -51,20 +44,72 @@ CREATE TABLE `location` (
   `id` int NOT NULL,
   `idutilisateur` int NOT NULL,
   `idhabitation` int NOT NULL,
-  `facture_id` int DEFAULT NULL,
   `datedebut` datetime NOT NULL,
   `datefin` datetime NOT NULL,
   `montanttotal` double NOT NULL DEFAULT '0',
   `montantverse` double NOT NULL DEFAULT '0'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ;
 
 --
 -- Déchargement des données de la table `location`
 --
 
-INSERT INTO `location` (`id`, `idutilisateur`, `idhabitation`, `facture_id`, `datedebut`, `datefin`, `montanttotal`, `montantverse`) VALUES
-(1, 5, 7, NULL, '2022-07-01 00:00:00', '2022-07-04 00:00:00', 0, 0),
-(2, 6, 8, 1, '2022-07-05 00:00:00', '2022-07-07 00:00:00', 0, 0);
+INSERT INTO `location` (`id`, `idutilisateur`, `idhabitation`, `datedebut`, `datefin`, `montanttotal`, `montantverse`) VALUES
+(1, 5, 7, '2022-07-01 00:00:00', '2022-07-04 00:00:00', 600, 0),
+(2, 6, 8, '2022-07-05 00:00:00', '2022-07-07 00:00:00', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `location_optionpayantero`
+--
+
+CREATE TABLE `location_optionpayantero` (
+  `location_id` int NOT NULL,
+  `optionpayantero_id` int NOT NULL,
+  `prix` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déclencheurs `location_optionpayantero`
+--
+DELIMITER $$
+CREATE TRIGGER `majd_location_optionpayante` AFTER DELETE ON `location_optionpayantero` FOR EACH ROW BEGIN
+    UPDATE location
+    SET montanttotal = montanttotal - OLD.prix
+    WHERE id = OLD.location_id;
+end
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `maji_location_optionpayante` AFTER INSERT ON `location_optionpayantero` FOR EACH ROW BEGIN
+    UPDATE location
+    SET montanttotal = montanttotal + NEW.prix
+    WHERE id = NEW.location_id;
+end
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `optionpayantero`
+--
+
+CREATE TABLE `optionpayantero` (
+  `id` int NOT NULL,
+  `libelle` varchar(100) NOT NULL,
+  `description` varchar(250) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `optionpayantero`
+--
+
+INSERT INTO `optionpayantero` (`id`, `libelle`, `description`) VALUES
+(1, 'Ménage', 'A la fin du séjour'),
+(2, 'Drap de lit', 'Pour l\'ensemble des lits'),
+(3, 'Linge de maison', 'Linge de toilette pour la salle de bain');
 
 -- --------------------------------------------------------
 
@@ -79,6 +124,27 @@ CREATE TABLE `reglement` (
   `dateversement` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `typereglement_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `reglement`
+--
+
+INSERT INTO `reglement` (`id`, `location_id`, `montant`, `dateversement`, `typereglement_id`) VALUES
+(4, 1, '200', '2022-07-04 11:01:31', 1),
+(5, 1, '200', '2022-07-04 11:01:52', 1),
+(6, 1, '200', '2022-07-04 11:01:57', 1);
+
+--
+-- Déclencheurs `reglement`
+--
+DELIMITER $$
+CREATE TRIGGER `maj_montant_verse` AFTER INSERT ON `reglement` FOR EACH ROW BEGIN
+    UPDATE location
+    SET montantverse = montantverse + NEW.montant
+    WHERE location.id = NEW.location_id;
+end
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -134,8 +200,20 @@ ALTER TABLE `facture`
 -- Index pour la table `location`
 --
 ALTER TABLE `location`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `facture_id` (`facture_id`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `location_optionpayantero`
+--
+ALTER TABLE `location_optionpayantero`
+  ADD PRIMARY KEY (`location_id`,`optionpayantero_id`),
+  ADD KEY `location_optionpayantero_id_fk` (`optionpayantero_id`);
+
+--
+-- Index pour la table `optionpayantero`
+--
+ALTER TABLE `optionpayantero`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `reglement`
@@ -166,13 +244,13 @@ ALTER TABLE `typereglement`
 -- AUTO_INCREMENT pour la table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `reglement`
 --
 ALTER TABLE `reglement`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `relance`
@@ -191,10 +269,17 @@ ALTER TABLE `typereglement`
 --
 
 --
--- Contraintes pour la table `location`
+-- Contraintes pour la table `facture`
 --
-ALTER TABLE `location`
-  ADD CONSTRAINT `location_ibfk_1` FOREIGN KEY (`facture_id`) REFERENCES `facture` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `facture`
+  ADD CONSTRAINT `facture_ibfk_1` FOREIGN KEY (`id`) REFERENCES `location` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+--
+-- Contraintes pour la table `location_optionpayantero`
+--
+ALTER TABLE `location_optionpayantero`
+  ADD CONSTRAINT `location_optionpayantero_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `location_optionpayantero_id_fk` FOREIGN KEY (`optionpayantero_id`) REFERENCES `optionpayantero` (`id`);
 
 --
 -- Contraintes pour la table `reglement`

@@ -8,8 +8,8 @@ namespace LocationLibrary.Models
         public int Id { get; set; }
         public int LocationId { get; set; }
         public DateTime Date { get; set; }
-        public string Motif { get; set; } = null!;
+        public string Motif { get; set; }
 
-        public virtual Location Location { get; set; } = null!;
+        public virtual Location Location { get; set; }
     }
 }

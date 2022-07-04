@@ -1,0 +1,12 @@
+.dockerignore
+.env
+.git
+.gitignore
+.vs
+.idea
+docker*.yaml
+Docker*.yaml
+
+**/bin
+**/obj
+**/logs

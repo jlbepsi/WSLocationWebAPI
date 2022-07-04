@@ -8,37 +8,37 @@ using System.Threading.Tasks;
 
 namespace LocationLibrary.BusinessLogic
 {
-    public class LocationService : ILocationService
+public class LocationService : ILocationService
+{
+    private readonly rhlocationContext contexte;
+
+    public LocationService()
     {
-        private readonly rhlocationContext contexte;
+        this.contexte = new rhlocationContext();
+    }
+    public LocationService(rhlocationContext contexte)
+    {
+        this.contexte = contexte;
+    }
 
-        public LocationService()
-        {
-            this.contexte = new rhlocationContext();
-        }
-        public LocationService(rhlocationContext contexte)
-        {
-            this.contexte = contexte;
-        }
-
-        public List<Location> GetLocations()
-        {
-            return contexte.Locations
-                .Include(f => f.Facture)
-                .Include(r => r.Reglements)
-                .Include(r => r.Relances)
-                .ToList();
-        }
+    public List<Location> GetLocations()
+    {
+        return contexte.Locations
+            .Include(f => f.Facture)
+            .Include(r => r.Reglements)
+            .Include(r => r.Relances)
+            .ToList();
+    }
 
 
-        public Location GetLocation(int id)
-        {
-            return contexte.Locations
-                .Include(f => f.Facture)
-                .Include(r => r.Reglements)
-                .Include(r => r.Relances)
-                .FirstOrDefault(l => l.Id == id);
-        }
+    public Location GetLocation(int id)
+    {
+        return contexte.Locations
+            .Include(f => f.Facture)
+            .Include(r => r.Reglements)
+            .Include(r => r.Relances)
+            .FirstOrDefault(l => l.Id == id);
+    }
 
         public Location AddLocation(Location location)
         {

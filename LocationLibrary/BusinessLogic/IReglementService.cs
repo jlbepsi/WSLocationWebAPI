@@ -1,4 +1,5 @@
-﻿using LocationLibrary.Models;
+﻿using System.Collections.Generic;
+using LocationLibrary.Models;
 
 namespace LocationLibrary.BusinessLogic
 {

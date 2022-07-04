@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  mysql_rhloc:
+    image: mariadb:10.7
+    container_name: rhlmariadb
+    env_file: ./docker/mariadb/.env
+    ports:
+      - "3312:3306"
+    volumes:
+      - ./Database/rhlocation.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - wshl-network
+
+  wslocation:
+    build:
+      context: .
+      dockerfile: DockerfileForCompose
+    container_name: wslocation
+    ports:
+      - "8012:80"
+    volumes:
+      - .logs:/logs
+    networks:
+      - wshl-network
+
+networks:
+  wshl-network:
+    driver: bridge

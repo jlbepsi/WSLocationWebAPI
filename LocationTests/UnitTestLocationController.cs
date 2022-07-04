@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using LocationLibrary.BusinessLogic;
 using LocationLibrary.Models;
 using Microsoft.AspNetCore.Http;
@@ -129,7 +131,7 @@ namespace LocationTests
             Location location = getDummyLocation();
 
             var mockService = new Mock<ILocationService>();
-            mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Throws(new LocationException("La date de fin doit être après la date de début"));
+            mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Throws(new LocationException("La date de fin doit ï¿½tre aprï¿½s la date de dï¿½but"));
             var mockLogger = new Mock<ILogger<LocationsController>>();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
@@ -141,7 +143,7 @@ namespace LocationTests
             Assert.IsNotNull(actionResult.Result);
             var badRequest = actionResult.Result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.That(badRequest.Value, Is.EqualTo("La date de fin doit être après la date de début"));
+            Assert.That(badRequest.Value, Is.EqualTo("La date de fin doit ï¿½tre aprï¿½s la date de dï¿½but"));
         }
 
         [Test]
@@ -162,7 +164,7 @@ namespace LocationTests
             Assert.IsNotNull(actionResult);
             var badRequest = actionResult as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.That(badRequest.Value, Is.EqualTo("Non implémenté, vous devez supprimer puis créer une location"));
+            Assert.That(badRequest.Value, Is.EqualTo("Non implï¿½mentï¿½, vous devez supprimer puis crï¿½er une location"));
 
         }
 
