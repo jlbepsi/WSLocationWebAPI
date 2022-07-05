@@ -46,6 +46,7 @@ cache:
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
+  - quality
 #  - deploy
 
 before_script:
@@ -63,12 +64,23 @@ unit-test-job:   # This job runs in the test stage.
   script:
     - 'dotnet test --no-restore'
 
-#lint-test-job:   # This job also runs in the test stage.
-#  stage: test    # It can run at the same time as unit-test-job (in parallel).
-#  script:
-#    - echo "Linting code... This will take about 10 seconds."
-#    - sleep 10
-#    - echo "No lint issues found."
+code-quality-job:
+  stage: quality
+  image: docker:stable
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  script:
+    - mkdir codequality-results
+    - docker run
+        --env CODECLIMATE_CODE="$PWD"
+        --volume "$PWD":/code
+        --volume /var/run/docker.sock:/var/run/docker.sock
+        --volume /tmp/cc:/tmp/cc
+        codeclimate/codeclimate analyze -f html > ./codequality-results/index.html
+  artifacts:
+    paths:
+      - codequality-results/
 
 #deploy-job:      # This job runs in the deploy stage.
 #  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
