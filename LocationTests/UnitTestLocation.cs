@@ -9,20 +9,6 @@ namespace LocationTests
 {
     public class UnitTestLocation
     {
-        private Location getDummyLocation()
-        {
-            return new Location()
-            {
-                Id = 1,
-                Idutilisateur = 1,
-                Idhabitation = 3,
-                Datedebut = DateTime.Now.AddDays(2),
-                Datefin = DateTime.Now.AddDays(4),
-                Montanttotal = 100,
-                Montantverse = 100
-            };
-        }
-
         /*
         [SetUp]
         public void Setup()
@@ -34,7 +20,7 @@ namespace LocationTests
         public void ConstraintOk_ShouldSuccess()
         {
             // Arrange
-            Location location = getDummyLocation();
+            Location location = TestsUtilitaires.getDummyLocation();
 
             // Act
             location.CheckDate();
@@ -50,7 +36,7 @@ namespace LocationTests
                 delegate
                 {
                     // Arrange
-                    Location location = getDummyLocation();
+                    Location location = TestsUtilitaires.getDummyLocation();
                     location.Datedebut = DateTime.Now.AddDays(-1);
 
                     // Act
@@ -70,7 +56,7 @@ namespace LocationTests
                 delegate
                 {
                     // Arrange
-                    Location location = getDummyLocation();
+                    Location location = TestsUtilitaires.getDummyLocation();
                     location.Datedebut = location.Datefin.AddDays(1);
 
                     // Act
@@ -90,7 +76,7 @@ namespace LocationTests
                 delegate
                 {
                     // Arrange
-                    Location location = getDummyLocation();
+                    Location location = TestsUtilitaires.getDummyLocation();
                     location.Montanttotal = 100;
                     location.Montantverse = location.Montanttotal + 1;
 

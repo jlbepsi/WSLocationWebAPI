@@ -12,46 +12,6 @@ namespace LocationTests
 {
     public class UnitTestLocationController
     {
-        private List<Location> getDummyLocations()
-        {
-            return new List<Location> {
-                new Location()
-                {
-                    Id = 1,
-                    Idutilisateur = 1,
-                    Idhabitation = 3,
-                    Datedebut = DateTime.Now.AddDays(2),
-                    Datefin = DateTime.Now.AddDays(3),
-                    Montanttotal = 100,
-                    Montantverse = 100,
-                },
-                new Location()
-                {
-                    Id = 2,
-                    Idutilisateur = 2,
-                    Idhabitation = 4,
-                    Datedebut = DateTime.Now.AddDays(2),
-                    Datefin = DateTime.Now.AddDays(7),
-                    Montanttotal = 420,
-                    Montantverse = 100,
-                }
-            };
-        }
-        private Location getDummyLocation()
-        {
-            return new Location()
-            {
-                Id = 1,
-                Idutilisateur = 1,
-                Idhabitation = 3,
-                Datedebut = DateTime.Now.AddDays(2),
-                Datefin = DateTime.Now.AddDays(3),
-                Montanttotal = 100,
-                Montantverse = 100,
-            };
-        }
-
-
         /*
         [SetUp]
         public void Setup()
@@ -64,7 +24,7 @@ namespace LocationTests
         {
             // Arrange
             var mockService = new Mock<ILocationService>();
-            mockService.Setup(x => x.GetLocations()).Returns(getDummyLocations());
+            mockService.Setup(x => x.GetLocations()).Returns(TestsUtilitaires.getDummyLocations());
             var mockLogger = new Mock<ILogger<LocationsController>> ();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
@@ -84,7 +44,7 @@ namespace LocationTests
         {
             // Arrange
             var mockService = new Mock<ILocationService>();
-            mockService.Setup(x => x.GetLocation(1)).Returns(getDummyLocation());
+            mockService.Setup(x => x.GetLocation(1)).Returns(TestsUtilitaires.getDummyLocation());
             var mockLogger = new Mock<ILogger<LocationsController>>();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
@@ -102,7 +62,7 @@ namespace LocationTests
         public void POSTCreate_ShouldReturnCreated()
         {
             // Arrange
-            Location location = getDummyLocation();
+            Location location = TestsUtilitaires.getDummyLocation();
             var mockService = new Mock<ILocationService>();
             mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Returns(location);
             var mockLogger = new Mock<ILogger<LocationsController>>();
@@ -128,10 +88,10 @@ namespace LocationTests
         public void POSTCreateConstraintBadDates_ShouldReturnBadRequest()
         {
             // Arrange
-            Location location = getDummyLocation();
+            Location location = TestsUtilitaires.getDummyLocation();
 
             var mockService = new Mock<ILocationService>();
-            mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Throws(new LocationException("La date de fin doit �tre apr�s la date de d�but"));
+            mockService.Setup(x => x.AddLocation(It.IsAny<Location>())).Throws(new LocationException("La date de fin doit être après la date de début"));
             var mockLogger = new Mock<ILogger<LocationsController>>();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
@@ -143,7 +103,7 @@ namespace LocationTests
             Assert.IsNotNull(actionResult.Result);
             var badRequest = actionResult.Result as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.That(badRequest.Value, Is.EqualTo("La date de fin doit �tre apr�s la date de d�but"));
+            Assert.That(badRequest.Value, Is.EqualTo("La date de fin doit être après la date de début"));
         }
 
         [Test]
@@ -152,7 +112,7 @@ namespace LocationTests
             // Should not be implemented
 
             // Arrange
-            Location location = getDummyLocation();
+            Location location = TestsUtilitaires.getDummyLocation();
             var mockService = new Mock<ILocationService>();
             var mockLogger = new Mock<ILogger<LocationsController>>();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
@@ -173,7 +133,7 @@ namespace LocationTests
         {
             // Arrange
             var mockService = new Mock<ILocationService>();
-            mockService.Setup(x => x.DeleteLocation(It.IsAny<int>())).Returns(getDummyLocation());
+            mockService.Setup(x => x.DeleteLocation(It.IsAny<int>())).Returns(TestsUtilitaires.getDummyLocation());
             var mockLogger = new Mock<ILogger<LocationsController>>();
             var controller = new LocationsController(mockService.Object, mockLogger.Object);
 
