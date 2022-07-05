@@ -20,8 +20,8 @@ namespace LocationTests
                     Id = 1,
                     Idutilisateur = 1,
                     Idhabitation = 3,
-                    Datedebut = new DateTime(2022, 7, 5),
-                    Datefin = new DateTime(2022, 7, 6),
+                    Datedebut = DateTime.Now.AddDays(2),
+                    Datefin = DateTime.Now.AddDays(3),
                     Montanttotal = 100,
                     Montantverse = 100,
                 },
@@ -30,8 +30,8 @@ namespace LocationTests
                     Id = 2,
                     Idutilisateur = 2,
                     Idhabitation = 4,
-                    Datedebut = new DateTime(2022, 7, 12),
-                    Datefin = new DateTime(2022, 7, 17),
+                    Datedebut = DateTime.Now.AddDays(2),
+                    Datefin = DateTime.Now.AddDays(7),
                     Montanttotal = 420,
                     Montantverse = 100,
                 }
@@ -44,8 +44,8 @@ namespace LocationTests
                 Id = 1,
                 Idutilisateur = 1,
                 Idhabitation = 3,
-                Datedebut = new DateTime(2022, 7, 5),
-                Datefin = new DateTime(2022, 7, 6),
+                Datedebut = DateTime.Now.AddDays(2),
+                Datefin = DateTime.Now.AddDays(3),
                 Montanttotal = 100,
                 Montantverse = 100,
             };
@@ -164,7 +164,7 @@ namespace LocationTests
             Assert.IsNotNull(actionResult);
             var badRequest = actionResult as BadRequestObjectResult;
             Assert.IsNotNull(badRequest);
-            Assert.That(badRequest.Value, Is.EqualTo("Non impl�ment�, vous devez supprimer puis cr�er une location"));
+            Assert.That(badRequest.Value, Is.EqualTo("Non implémenté, vous devez supprimer puis créer une location"));
 
         }
 
