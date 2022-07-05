@@ -12,10 +12,6 @@ namespace LocationLibrary.BusinessLogic
     {
         private readonly rhlocationContext contexte;
 
-        public ReglementService()
-        {
-            this.contexte = new rhlocationContext();
-        }
         public ReglementService(rhlocationContext contexte)
         {
             this.contexte = contexte;

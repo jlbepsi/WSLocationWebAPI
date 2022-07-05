@@ -12,10 +12,6 @@ namespace LocationLibrary.BusinessLogic
     {
         private readonly rhlocationContext contexte;
 
-        public RelanceService()
-        {
-            this.contexte = new rhlocationContext();
-        }
         public RelanceService(rhlocationContext contexte)
         {
             this.contexte = contexte;

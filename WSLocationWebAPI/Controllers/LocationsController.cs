@@ -143,8 +143,6 @@ namespace WSLocationWebAPI.Controllers
         /// Supprime une location d'après son id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <param name="id"></param>
         /// <returns>L'objet Location supprimé</returns>
         /// <see cref="Location"/>
         /// <response code="404">La location d'id n'existe pas</response>     

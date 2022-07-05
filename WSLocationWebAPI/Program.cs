@@ -4,7 +4,9 @@ using LocationLibrary.BusinessLogic;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using LocationLibrary.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,9 +23,18 @@ builder.Host.UseNLog();
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
 
+
+builder.Services.AddDbContext<rhlocationContext>(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("RHLocationDatabase");
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    }
+);
+
 // Dependency Injection
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<IRelanceService, RelanceService>();
+builder.Services.AddScoped<IReglementService, ReglementService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 // Voir https://docs.microsoft.com/fr-fr/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-6.0&tabs=visual-studio

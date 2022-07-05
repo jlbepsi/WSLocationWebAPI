@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<configuration>
-  <connectionStrings>
-    <add name="connexion_name" connectionString="server=server_ip_or_name;database=dbname;uid=user;pwd=password;" providerName="System.Data.SqlClient" />
-  </connectionStrings>
-</configuration>

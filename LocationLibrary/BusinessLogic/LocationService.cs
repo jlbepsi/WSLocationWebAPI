@@ -12,10 +12,6 @@ public class LocationService : ILocationService
 {
     private readonly rhlocationContext contexte;
 
-    public LocationService()
-    {
-        this.contexte = new rhlocationContext();
-    }
     public LocationService(rhlocationContext contexte)
     {
         this.contexte = contexte;
