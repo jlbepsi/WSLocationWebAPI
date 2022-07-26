@@ -153,11 +153,11 @@ namespace LocationLibrary.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("reglement_ibfk_2");
 
-                entity.HasOne(d => d.Typereglement)
+                /*entity.HasOne(d => d.Typereglement)
                     .WithMany(p => p.Reglements)
                     .HasForeignKey(d => d.TypereglementId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("reglement_ibfk_1");
+                    .HasConstraintName("reglement_ibfk_1");*/
             });
 
             modelBuilder.Entity<Relance>(entity =>

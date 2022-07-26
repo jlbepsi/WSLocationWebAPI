@@ -55,12 +55,45 @@ namespace WSLocationWebAPI.Controllers
             }
         }
 
+        // GET: api/<ReglementsController>/location/2
+        /// <summary>
+        /// Retourne la liste des règlements l'id d'une location
+        /// </summary>
+        /// <param name="idLocation">Id de la location</param>
+        /// <returns>Une liste d'objet Reglement</returns>
+        /// <see cref="Reglement"/>
+        /// <example>
+        /// http://serveur/api/v1/reglements/location/2
+        /// </example>
+        [HttpGet("location/{idLocation}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<List<Reglement>> Get(int idLocation)
+        {
+            try
+            {
+                return _reglementService.GetReglementsByLocationId(idLocation);
+            }
+            catch (LocationException locationException)
+            {
+                _logger.LogError(locationException, locationException.Message);
+                return StatusCode(locationException.StatusCode);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
         // GET api/<ReglementsController>/5
 
         /// <summary>
         /// Retourne le règlement identifié par <paramref name="id"/>
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id du réglement</param>
         /// <returns>Un objet Reglement</returns>
         /// <see cref="Reglement"/>
         /// <response code="404">Le règlement d'id id n'existe pas</response>     

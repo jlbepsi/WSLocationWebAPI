@@ -24,6 +24,14 @@ namespace LocationLibrary.BusinessLogic
                 .ToList();
         }
 
+        public List<Relance> GetRelancesByLocationId(int idLocation)
+        {
+            return contexte.Relances
+                .Include(l => l.Location)
+                .Where((l => l.LocationId == idLocation))
+                .ToList();
+        }
+
         public Relance GetRelance(int id)
         {
             return contexte.Relances

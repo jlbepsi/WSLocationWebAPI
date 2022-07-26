@@ -7,12 +7,12 @@ namespace LocationLibrary.Models
     {
         public Typereglement()
         {
-            Reglements = new HashSet<Reglement>();
+            // Reglements = new HashSet<Reglement>();
         }
 
         public int Id { get; set; }
         public string Libelle { get; set; }
 
-        public virtual ICollection<Reglement> Reglements { get; set; }
+        // public virtual ICollection<Reglement> Reglements { get; set; }
     }
 }

@@ -50,6 +50,26 @@ public class LocationService : ILocationService
                 Montanttotal = location.Montanttotal,
                 Montantverse = location.Montantverse
             };
+            
+            // Vérification des dates
+            /*
+             *  select *
+                from location
+                where idutilisateur = 5 and idhabitation = 7
+                    and ((CAST('2022-06-20' AS DATE) between datedebut and datefin)
+                    OR (CAST('2022-07-03' AS DATE) between datedebut and datefin))
+             */
+            List<Location> locations = contexte.Locations.Where(l => 
+                l.Idutilisateur == location.Idutilisateur &&
+                l.Idhabitation == location.Idhabitation &&
+                location.Datedebut <= l.Datefin && location.Datefin >= l.Datedebut
+            ).ToList();
+            if (locations.Count > 0)
+            {
+                // Conflit de dates
+                throw new LocationException("Une location existe déjà pour les dates demandées");
+            }
+            
 
             // Ajout de la location
             contexte.Locations.Add(locationDB);

@@ -55,6 +55,39 @@ namespace WSLocationWebAPI.Controllers
             }
         }
 
+        // GET: api/<RelancesController>/location/2
+        /// <summary>
+        /// Retourne la liste des relances d'après l'id d'une location
+        /// </summary>
+        /// <param name="idLocation"></param>
+        /// <returns>Une liste d'objet Relance</returns>
+        /// <see cref="Relance"/>
+        /// <example>
+        /// http://serveur/api/v1/relances
+        /// </example>
+        [HttpGet("location/{idLocation}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<List<Relance>> Get(int idLocation)
+        {
+            try
+            {
+                return _relanceService.GetRelancesByLocationId(idLocation);
+            }
+            catch (LocationException locationException)
+            {
+                _logger.LogError(locationException, locationException.Message);
+                return StatusCode(locationException.StatusCode);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception, exception.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, exception.Message);
+            }
+        }
+
         // GET api/<RelancesController>/5
 
         /// <summary>

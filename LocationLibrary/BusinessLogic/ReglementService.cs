@@ -25,6 +25,15 @@ namespace LocationLibrary.BusinessLogic
                 .ToList();
         }
 
+        public List<Reglement> GetReglementsByLocationId(int idLocation)
+        {
+            return contexte.Reglements
+                .Include(l => l.Location)
+                .Include(t => t.Typereglement)
+                .Where(l => l.LocationId == idLocation)
+                .ToList();
+        }
+
         public Reglement GetReglement(int id)
         {
             return contexte.Reglements

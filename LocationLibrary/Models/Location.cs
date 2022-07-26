@@ -21,7 +21,7 @@ namespace LocationLibrary.Models
         public double Montanttotal { get; set; }
         public double Montantverse { get; set; }
 
-        public virtual Facture Facture { get; set; }
+        public virtual Facture? Facture { get; set; }
         public virtual ICollection<LocationOptionpayantero> LocationOptionpayanteros { get; set; }
         public virtual ICollection<Reglement> Reglements { get; set; }
         public virtual ICollection<Relance> Relances { get; set; }
